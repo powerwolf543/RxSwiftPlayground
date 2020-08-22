@@ -1,5 +1,5 @@
 # RxSwiftPlayground
-A iOS project that is practiced with `RxSwift`
+An iOS project that is practiced with `RxSwift`
 
 ## Author
 
