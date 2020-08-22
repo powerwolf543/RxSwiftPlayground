@@ -14,5 +14,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "Networking", dependencies: ["RxSwift"]),
+        .testTarget(name: "NetworkingTests", dependencies: ["Networking"])
     ]
 )

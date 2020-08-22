@@ -32,7 +32,7 @@ final public class HTTPClient: NetworkClient {
                     observer.onError(error)
                 }
                 
-                guard let data = data else {
+                guard let data = data, data.count > 0 else {
                     observer.onError(Error.emptyResponse)
                     return
                 }
