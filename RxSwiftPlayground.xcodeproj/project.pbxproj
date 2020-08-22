@@ -18,6 +18,7 @@
 		25A52C2424F11DC0004A1256 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25A52C2724F11DC0004A1256 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25A52C2924F11DC0004A1256 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		25A52C2F24F11F9E004A1256 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = text; path = Networking; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +55,7 @@
 				25A52C2424F11DC0004A1256 /* Assets.xcassets */,
 				25A52C2624F11DC0004A1256 /* LaunchScreen.storyboard */,
 				25A52C2924F11DC0004A1256 /* Info.plist */,
+				25A52C2F24F11F9E004A1256 /* Networking */,
 			);
 			path = RxSwiftPlayground;
 			sourceTree = "<group>";
