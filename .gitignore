@@ -1,0 +1,30 @@
+# Xcode
+
+## Build generated
+build/
+*.app.dSYM.zip
+*.ipa
+
+## User settings
+xcuserdata/
+
+## Obj-C/Swift specific
+*.hmap
+
+# Swift Package Manager
+.build/
+
+# fastlane
+/fastlane/report.xml
+
+## deliver temporary files
+/fastlane/Preview.html
+
+## snapshot generated screenshots
+/fastlane/screenshots
+
+## scan temporary files
+/fastlane/test_output
+
+# macOS
+.DS_Store
