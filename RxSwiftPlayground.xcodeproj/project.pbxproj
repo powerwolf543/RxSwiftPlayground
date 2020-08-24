@@ -13,6 +13,8 @@
 		25A52C1C24F11DBF004A1256 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A52C1B24F11DBF004A1256 /* AppDelegate.swift */; };
 		25A52C2524F11DC0004A1256 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25A52C2424F11DC0004A1256 /* Assets.xcassets */; };
 		25A52C2824F11DC0004A1256 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25A52C2624F11DC0004A1256 /* LaunchScreen.storyboard */; };
+		25EC032624F4352C00B3768F /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EC032524F4352C00B3768F /* PhotoListViewController.swift */; };
+		25EC032824F4359100B3768F /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EC032724F4359100B3768F /* NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		25A52C2724F11DC0004A1256 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25A52C2924F11DC0004A1256 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25A52C2F24F11F9E004A1256 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = text; path = Networking; sourceTree = SOURCE_ROOT; };
+		25EC032524F4352C00B3768F /* PhotoListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
+		25EC032724F4359100B3768F /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				25A52C1B24F11DBF004A1256 /* AppDelegate.swift */,
+				25EC032724F4359100B3768F /* NavigationController.swift */,
+				25EC032524F4352C00B3768F /* PhotoListViewController.swift */,
 				25A52C2424F11DC0004A1256 /* Assets.xcassets */,
 				25A52C2624F11DC0004A1256 /* LaunchScreen.storyboard */,
 				25A52C2924F11DC0004A1256 /* Info.plist */,
@@ -153,6 +159,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				25A52C1C24F11DBF004A1256 /* AppDelegate.swift in Sources */,
+				25EC032824F4359100B3768F /* NavigationController.swift in Sources */,
+				25EC032624F4352C00B3768F /* PhotoListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
