@@ -9,5 +9,7 @@ import RxSwift
 import XCTest
 
 final class ImageLoaderTests: XCTestCase {
-    
+    func test() {
+        
+    }
 }

@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scheme: ["Networking"]
+        scheme: ["ImageLoader", "Networking"]
         xcode: ["11.6"]
 
     steps:
