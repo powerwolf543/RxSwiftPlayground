@@ -1,0 +1,29 @@
+name: UnitTests
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  push:
+    branches:
+      - master
+
+jobs:
+  swiftpm_tests:
+    name: ${{ matrix.scheme }} tests on Xcode ${{ matrix.xcode }}
+    runs-on: macos-latest
+    timeout-minutes: 5
+    if: github.event.pull_request.draft == false
+    strategy:
+      fail-fast: false
+      matrix:
+        scheme: ["Networking"]
+        xcode: ["11.6"]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Select Xcode ${{ matrix.xcode }}
+      run: sudo xcode-select --switch /Applications/Xcode_${{ matrix.xcode }}.app
+
+    - name: ${{ matrix.scheme }} tests
+      run: xcodebuild test -scheme ${{ matrix.scheme }} -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.6'
