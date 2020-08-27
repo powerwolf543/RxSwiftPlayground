@@ -1,3 +1,5 @@
+[![](https://github.com/powerwolf543/RxSwiftPlayground/workflows/UnitTests/badge.svg)](https://github.com/powerwolf543/RxSwiftPlayground/actions?query=workflow%3AUnitTests) 
+
 # RxSwiftPlayground
 An iOS project that is practiced with `RxSwift`
 
