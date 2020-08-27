@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		25515AC924F6AA1B00BCDB1C /* PhotoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25515AC824F6AA1B00BCDB1C /* PhotoTableViewCell.swift */; };
+		25533B2B24F7EFE600D8305A /* ImageLoader in Frameworks */ = {isa = PBXBuildFile; productRef = 25533B2A24F7EFE600D8305A /* ImageLoader */; };
 		25A1E76924F1963F003E80E3 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76824F1963F003E80E3 /* Networking */; };
 		25A1E76C24F1967D003E80E3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76B24F1967D003E80E3 /* RxSwift */; };
 		25A1E76E24F1967D003E80E3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76D24F1967D003E80E3 /* RxCocoa */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		25515AC824F6AA1B00BCDB1C /* PhotoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTableViewCell.swift; sourceTree = "<group>"; };
+		25533B2924F7EF6200D8305A /* ImageLoader */ = {isa = PBXFileReference; lastKnownFileType = text; path = ImageLoader; sourceTree = SOURCE_ROOT; };
 		25A52C1824F11DBF004A1256 /* RxSwiftPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxSwiftPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A52C1B24F11DBF004A1256 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25A52C2424F11DC0004A1256 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -36,6 +38,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25A1E76E24F1967D003E80E3 /* RxCocoa in Frameworks */,
+				25533B2B24F7EFE600D8305A /* ImageLoader in Frameworks */,
 				25A1E76C24F1967D003E80E3 /* RxSwift in Frameworks */,
 				25A1E76924F1963F003E80E3 /* Networking in Frameworks */,
 			);
@@ -78,6 +81,7 @@
 				25A52C2424F11DC0004A1256 /* Assets.xcassets */,
 				25A52C2624F11DC0004A1256 /* LaunchScreen.storyboard */,
 				25A52C2924F11DC0004A1256 /* Info.plist */,
+				25533B2924F7EF6200D8305A /* ImageLoader */,
 				25A52C2F24F11F9E004A1256 /* Networking */,
 			);
 			path = RxSwiftPlayground;
@@ -103,6 +107,7 @@
 				25A1E76824F1963F003E80E3 /* Networking */,
 				25A1E76B24F1967D003E80E3 /* RxSwift */,
 				25A1E76D24F1967D003E80E3 /* RxCocoa */,
+				25533B2A24F7EFE600D8305A /* ImageLoader */,
 			);
 			productName = RxSwiftPlayground;
 			productReference = 25A52C1824F11DBF004A1256 /* RxSwiftPlayground.app */;
@@ -369,6 +374,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		25533B2A24F7EFE600D8305A /* ImageLoader */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ImageLoader;
+		};
 		25A1E76824F1963F003E80E3 /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
