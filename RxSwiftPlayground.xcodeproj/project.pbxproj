@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25515AC924F6AA1B00BCDB1C /* PhotoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25515AC824F6AA1B00BCDB1C /* PhotoTableViewCell.swift */; };
 		25A1E76924F1963F003E80E3 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76824F1963F003E80E3 /* Networking */; };
 		25A1E76C24F1967D003E80E3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76B24F1967D003E80E3 /* RxSwift */; };
 		25A1E76E24F1967D003E80E3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 25A1E76D24F1967D003E80E3 /* RxCocoa */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		25515AC824F6AA1B00BCDB1C /* PhotoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTableViewCell.swift; sourceTree = "<group>"; };
 		25A52C1824F11DBF004A1256 /* RxSwiftPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxSwiftPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25A52C1B24F11DBF004A1256 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25A52C2424F11DC0004A1256 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				25A52C1B24F11DBF004A1256 /* AppDelegate.swift */,
 				25EC032724F4359100B3768F /* NavigationController.swift */,
 				25EC032524F4352C00B3768F /* PhotoListViewController.swift */,
+				25515AC824F6AA1B00BCDB1C /* PhotoTableViewCell.swift */,
 				25A52C2424F11DC0004A1256 /* Assets.xcassets */,
 				25A52C2624F11DC0004A1256 /* LaunchScreen.storyboard */,
 				25A52C2924F11DC0004A1256 /* Info.plist */,
@@ -158,6 +161,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25515AC924F6AA1B00BCDB1C /* PhotoTableViewCell.swift in Sources */,
 				25A52C1C24F11DBF004A1256 /* AppDelegate.swift in Sources */,
 				25EC032824F4359100B3768F /* NavigationController.swift in Sources */,
 				25EC032624F4352C00B3768F /* PhotoListViewController.swift in Sources */,
