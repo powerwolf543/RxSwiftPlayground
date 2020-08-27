@@ -11,7 +11,7 @@ jobs:
   swiftpm_tests:
     name: ${{ matrix.scheme }} tests on Xcode ${{ matrix.xcode }}
     runs-on: macos-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     if: github.event.pull_request.draft == false
     strategy:
       fail-fast: false
