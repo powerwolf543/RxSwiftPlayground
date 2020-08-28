@@ -8,6 +8,7 @@ import CryptoKit
 import Foundation
 
 extension String {
+    /// A hash string that encodese with SHA256
     internal var sha256: String {
         let inputData = Data(self.utf8)
         let hashed = SHA256.hash(data: inputData)
