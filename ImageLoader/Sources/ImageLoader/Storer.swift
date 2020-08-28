@@ -1,13 +1,13 @@
 //
-//  ImageStorer.swift
+//  Storer.swift
 //
 //  Created by Nixon Shih on 2020/8/28.
 //
 
 import Foundation
 
-/// Represents types which can be stored and retrieved the image data
-internal protocol ImageStorer {
+/// Represents types which can be stored and retrieved the data
+internal protocol Storer {
     /// Stores the data
     /// - Parameters:
     ///   - data: A data that you want to persist

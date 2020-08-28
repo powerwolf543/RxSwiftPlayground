@@ -1,19 +1,19 @@
 //
-//  DiskImageStorer.swift
+//  DiskStorer.swift
 //
 //  Created by Nixon Shih on 2020/8/28.
 //
 
 import Foundation
 
-/// The image storer that manage to store and retrieve the data of image
-internal final class DiskImageStorer: ImageStorer {
+/// The storer that manage to store and retrieve the data to local storage
+internal final class DiskStorer: Storer {
     private let storeURL: URL
     private let privateQueue: DispatchQueue
     
     internal init() {
         storeURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        privateQueue = DispatchQueue(label: "com.DiskImageStorer.privateQueue")
+        privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue")
     }
 
     /// Stores the data to local storage
