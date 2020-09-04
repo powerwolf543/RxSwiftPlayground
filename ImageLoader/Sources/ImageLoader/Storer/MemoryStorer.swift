@@ -22,7 +22,7 @@ internal final class MemoryStorer: Storer {
     /// - Parameters:
     ///   - data: A data that you want to cache in memory
     ///   - key: A string which can be a store identifier
-    /// - Throws: ImageLoaderError.memoryStorerError
+    /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
         privateQueue.sync {
             caches.setObject(CacheContainer(data), forKey: key.absoluteString as NSString)
@@ -31,14 +31,10 @@ internal final class MemoryStorer: Storer {
     
     /// Retrieve data from memory
     /// - Parameter key: A string which can be a store identifier
-    /// - Throws: ImageLoaderError.memoryStorerError
     /// - Returns: A data for a specific key.
-    internal func retrieve(forKey key: URL) throws -> Data {
-        try privateQueue.sync {
-            guard let container = caches.object(forKey: key.absoluteString as NSString) else {
-                throw ImageLoaderError.memoryStorerError(reason: .dataNotFound)
-            }
-            return container.raw
+    internal func retrieve(forKey key: URL) -> Data? {
+        privateQueue.sync {
+            caches.object(forKey: key.absoluteString as NSString)?.raw
         }
     }
 }

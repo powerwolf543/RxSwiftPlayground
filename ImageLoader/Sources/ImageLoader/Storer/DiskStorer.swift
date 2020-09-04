@@ -20,30 +20,25 @@ internal final class DiskStorer: Storer {
     /// - Parameters:
     ///   - data: A data that you want to persist
     ///   - key: A string which can be a store identifier
-    /// - Throws: ImageLoaderError.diskStorerError
+    /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
         let destinationURL = getDestination(with: key)
         try privateQueue.sync {
             do {
                 try data.write(to: destinationURL)
             } catch {
-                throw ImageLoaderError.diskStorerError(error)
+                throw ImageLoaderError.storeError
             }
         }
     }
 
     /// Retrieve data from local storage
     /// - Parameter key: A string which can be a store identifier
-    /// - Throws: ImageLoaderError.diskStorerError
     /// - Returns: A data for a specific key.
-    internal func retrieve(forKey key: URL) throws -> Data {
-        let destinationURL = getDestination(with: key)
-        return try privateQueue.sync {
-            do {
-                return try Data(contentsOf: destinationURL)
-            } catch {
-                throw ImageLoaderError.diskStorerError(error)
-            }
+    internal func retrieve(forKey key: URL) -> Data? {
+        privateQueue.sync {
+            let destinationURL = getDestination(with: key)
+            return try? Data(contentsOf: destinationURL)
         }
     }
     

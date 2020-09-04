@@ -13,11 +13,6 @@ public enum ImageLoaderError: LocalizedError {
         case invalidData
     }
     
-    public enum DiskStorerErrorReason {
-        case dataNotFound
-    }
-    
     case networkError(reason: NetworkErrorReason)
-    case diskStorerError(Error)
-    case memoryStorerError(reason: DiskStorerErrorReason)
+    case storeError
 }
