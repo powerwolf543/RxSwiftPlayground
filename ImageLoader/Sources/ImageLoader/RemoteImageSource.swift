@@ -6,6 +6,7 @@
 
 import CoreImage
 import Foundation
+import RxSwift
 
 /// A image fetcher that manage to fetch the image data from remote
 internal final class RemoteImageFetcher {
@@ -20,24 +21,31 @@ internal final class RemoteImageFetcher {
     ///   - url: The remote image's url.
     ///   - completionHandler: Called when the download progress finishes. 
     /// - Returns: The data task of URLSession
-    internal func fetchImage(with url: URL, completionHandler: @escaping (Result<Data, ImageLoaderError>) -> Void) -> URLSessionDataTask {
-        session.dataTask(with: url) { [unowned self] data, _, error in
-            if let error = error {
-                completionHandler(.failure(.networkError(reason: .connection(error))))
-                return
+    internal func fetchImage(with url: URL) -> Observable<Data> {
+        Observable.create { [unowned self] observer in
+            let task = self.session.dataTask(with: url) { [weak self] data, _, error in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    observer.onError(ImageLoaderError.networkError(reason: .connection(error)))
+                    return
+                }
+                
+                guard let data = data else {
+                    observer.onError(ImageLoaderError.networkError(reason: .emptyResponse))
+                    return
+                }
+                
+                guard self.verifyData(data) else {
+                    observer.onError(ImageLoaderError.networkError(reason: .invalidData))
+                    return
+                }
+                
+                observer.onNext(data)
+                observer.onCompleted()
             }
-            
-            guard let data = data else {
-                completionHandler(.failure(.networkError(reason: .emptyResponse)))
-                return
-            }
-            
-            guard self.verifyData(data) else {
-                completionHandler(.failure(.networkError(reason: .invalidData)))
-                return
-            }
-            
-            completionHandler(.success(data))
+            task.resume()
+            return Disposables.create { task.cancel() }
         }
     }
     

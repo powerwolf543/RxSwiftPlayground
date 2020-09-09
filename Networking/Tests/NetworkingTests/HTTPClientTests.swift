@@ -5,6 +5,7 @@
 //
 
 import Networking
+import NetworkingTestHelpers
 import RxSwift
 import XCTest
 

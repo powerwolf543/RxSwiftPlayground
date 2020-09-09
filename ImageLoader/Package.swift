@@ -11,9 +11,13 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ReactiveX/RxSwift", from: "5.1.1"),
+        .package(path: "Networking"),
     ],
     targets: [
         .target(name: "ImageLoader", dependencies: ["RxSwift"]),
-        .testTarget(name: "ImageLoaderTests", dependencies: ["ImageLoader"])
+        .testTarget(name: "ImageLoaderTests", dependencies: [
+            "ImageLoader",
+            .product(name: "NetworkingTestHelpers", package: "Networking"),
+        ])
     ]
 )
