@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 /// A image fetcher that manage to fetch the image data from remote
-internal final class RemoteImageFetcher {
+internal final class RemoteImageSource {
     internal let session: URLSession
     
     internal init(session: URLSession = .shared) {

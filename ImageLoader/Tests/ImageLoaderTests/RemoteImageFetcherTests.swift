@@ -22,7 +22,7 @@ final class RemoteImageFetcherTests: XCTestCase {
         
         try TestsURLProtocol.addMockHTTPResponse(testData, for: url)
         let testSession = createTestSession()
-        let imageFetcher = RemoteImageFetcher(session: testSession)
+        let imageFetcher = RemoteImageSource(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
         

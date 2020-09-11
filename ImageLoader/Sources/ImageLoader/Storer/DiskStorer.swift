@@ -8,11 +8,11 @@ import Foundation
 
 /// The storer that manage to store and retrieve the data to local storage
 internal final class DiskStorer: Storer {
-    private let storeURL: URL
+    private let pathProvider: DiskPathProvider
     private let privateQueue: DispatchQueue
     
-    internal init() {
-        storeURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    internal init(pathProvider: DiskPathProvider = DiskPathProvider()) {
+        self.pathProvider = pathProvider
         privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue")
     }
 
@@ -22,10 +22,10 @@ internal final class DiskStorer: Storer {
     ///   - key: A string which can be a store identifier
     /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
-        let destinationURL = getDestination(with: key)
+        let cacheURL = pathProvider.getStorePath(with: key)
         try privateQueue.sync {
             do {
-                try data.write(to: destinationURL)
+                try data.write(to: cacheURL)
             } catch {
                 throw ImageLoaderError.storeError
             }
@@ -37,12 +37,21 @@ internal final class DiskStorer: Storer {
     /// - Returns: A data for a specific key.
     internal func retrieve(forKey key: URL) -> Data? {
         privateQueue.sync {
-            let destinationURL = getDestination(with: key)
-            return try? Data(contentsOf: destinationURL)
+            let cacheURL = pathProvider.getStorePath(with: key)
+            return try? Data(contentsOf: cacheURL)
         }
     }
+}
+
+/// The path provider that provide the URL of disk storage
+internal struct DiskPathProvider {
+    private let cachesDirectoryURL: URL
     
-    private func getDestination(with key: URL) -> URL {
-        storeURL.appendingPathComponent(key.absoluteString.sha256)
+    internal init(cachesDirectoryURL: URL? = nil) {
+        self.cachesDirectoryURL = cachesDirectoryURL ?? FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    }
+    
+    internal func getStorePath(with key: URL) -> URL {
+        cachesDirectoryURL.appendingPathComponent(key.absoluteString.sha256)
     }
 }
