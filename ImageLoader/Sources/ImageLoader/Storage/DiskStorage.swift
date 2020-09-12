@@ -1,25 +1,25 @@
 //
-//  DiskStorer.swift
+//  DiskStorage.swift
 //
 //  Created by Nixon Shih on 2020/8/28.
 //
 
 import Foundation
 
-/// The storer that manage to store and retrieve the data to local storage
-internal final class DiskStorer: Storer {
+/// The storage that manages to store and retrieve the data to local storage
+internal final class DiskStorage: Storage {
     private let pathProvider: DiskPathProvider
     private let privateQueue: DispatchQueue
     
     internal init(pathProvider: DiskPathProvider = DiskPathProvider()) {
         self.pathProvider = pathProvider
-        privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue", attributes: .concurrent)
+        privateQueue = DispatchQueue(label: "com.DiskStorage.privateQueue", attributes: .concurrent)
     }
 
     /// Stores the data to local storage
     /// - Parameters:
     ///   - data: A data that you want to persist
-    ///   - key: A string which can be a store identifier
+    ///   - key: A `URL` which could be a store identifier
     /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
         let cacheURL = pathProvider.getStorePath(with: key)
@@ -32,9 +32,9 @@ internal final class DiskStorer: Storer {
         }
     }
 
-    /// Retrieve data from local storage
-    /// - Parameter key: A string which can be a store identifier
-    /// - Returns: A data for a specific key.
+    /// Retrieves data from local storage
+    /// - Parameter key: A `URL` which could be a store identifier
+    /// - Returns: A data for the specific key.
     internal func retrieve(forKey key: URL) -> Data? {
         privateQueue.sync {
             let cacheURL = pathProvider.getStorePath(with: key)
@@ -43,7 +43,7 @@ internal final class DiskStorer: Storer {
     }
 }
 
-/// The path provider that provide the URL of disk storage
+/// The path provider that provides the URL of disk storage
 internal struct DiskPathProvider {
     private let cachesDirectoryURL: URL
     

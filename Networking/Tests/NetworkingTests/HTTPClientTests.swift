@@ -22,7 +22,7 @@ final class HTTPClientTests: XCTestCase {
 
         try TestsURLProtocol.addMockHTTPResponse(testData, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -43,7 +43,7 @@ final class HTTPClientTests: XCTestCase {
 
         TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -71,7 +71,7 @@ final class HTTPClientTests: XCTestCase {
 
         try TestsURLProtocol.addMockHTTPResponse(nil, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -99,7 +99,7 @@ final class HTTPClientTests: XCTestCase {
         let testModel = TestDataModel()
         
         try TestsURLProtocol.addMockHTTPResponse(encoding: testModel, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<TestDataModel>(baseURL: url)
         
@@ -120,7 +120,7 @@ final class HTTPClientTests: XCTestCase {
         let url = URL(string: "https://www.ios.test/")!
 
         TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<TestDataModel>(baseURL: url)
         
@@ -149,7 +149,7 @@ final class HTTPClientTests: XCTestCase {
         let testModel = TestDataModel()
         
         try TestsURLProtocol.addMockHTTPResponse(encoding: testModel, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<String>(baseURL: url)
         
@@ -173,12 +173,6 @@ final class HTTPClientTests: XCTestCase {
             onCompleted: { fetchExpectation.fulfill() }
         ).disposed(by: bag)
         waitForExpectations(timeout: 1)
-    }
-    
-    private func createTestSession() -> URLSession {
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [TestsURLProtocol.self]
-        return URLSession(configuration: config)
     }
 }
 

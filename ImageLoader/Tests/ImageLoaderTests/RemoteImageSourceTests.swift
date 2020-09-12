@@ -19,7 +19,7 @@ final class RemoteImageSourceTests: XCTestCase {
         let testData = TestImage.imageData
         
         try TestsURLProtocol.addMockHTTPResponse(testData, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let imageFetcher = RemoteImageSource(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -39,7 +39,7 @@ final class RemoteImageSourceTests: XCTestCase {
         let url = URL(string: "https://www.ios.test/")!
         
         TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let imageFetcher = RemoteImageSource(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -73,7 +73,7 @@ final class RemoteImageSourceTests: XCTestCase {
         let url = URL(string: "https://www.ios.test/")!
         
         try TestsURLProtocol.addMockHTTPResponse(nil, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let imageFetcher = RemoteImageSource(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -103,7 +103,7 @@ final class RemoteImageSourceTests: XCTestCase {
         let testData = Data("Invalid Data".utf8)
         
         try TestsURLProtocol.addMockHTTPResponse(testData, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let imageFetcher = RemoteImageSource(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -126,11 +126,5 @@ final class RemoteImageSourceTests: XCTestCase {
             onCompleted: { fetchExpectation.fulfill() }
         )
         waitForExpectations(timeout: 0.5)
-    }
-    
-    private func createTestSession() -> URLSession {
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [TestsURLProtocol.self]
-        return URLSession(configuration: config)
     }
 }

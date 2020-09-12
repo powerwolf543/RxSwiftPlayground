@@ -8,19 +8,21 @@ import CoreImage
 import Foundation
 import RxSwift
 
-/// A image fetcher that manage to fetch the image data from remote
+/// A image fetcher that manages to fetch the image data from remote
 internal final class RemoteImageSource {
-    internal static let shared: RemoteImageSource = RemoteImageSource()
+    internal static let shared: RemoteImageSource = RemoteImageSource(session: .shared)
     
     private let session: URLSession
     private let observableMap: ImageDataObservableMap
     
-    internal init(session: URLSession = .shared) {
+    /// RemoteImageSource initializer
+    /// - Parameter session: Underlying `URLSession` for this instance.
+    internal init(session: URLSession) {
         self.session = session
         observableMap = ImageDataObservableMap()
     }
     
-    /// Fetchs the image data from remote
+    /// Fetches the image data from remote
     /// - Parameters:
     ///   - url: The remote image's url.
     /// - Returns: The observable of image data
