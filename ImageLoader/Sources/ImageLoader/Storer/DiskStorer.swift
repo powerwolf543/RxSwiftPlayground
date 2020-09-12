@@ -13,7 +13,7 @@ internal final class DiskStorer: Storer {
     
     internal init(pathProvider: DiskPathProvider = DiskPathProvider()) {
         self.pathProvider = pathProvider
-        privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue")
+        privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue", attributes: .concurrent)
     }
 
     /// Stores the data to local storage
@@ -23,7 +23,7 @@ internal final class DiskStorer: Storer {
     /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
         let cacheURL = pathProvider.getStorePath(with: key)
-        try privateQueue.sync {
+        try privateQueue.sync(flags: .barrier) {
             do {
                 try data.write(to: cacheURL)
             } catch {

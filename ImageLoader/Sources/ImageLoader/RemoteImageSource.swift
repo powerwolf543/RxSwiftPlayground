@@ -10,19 +10,22 @@ import RxSwift
 
 /// A image fetcher that manage to fetch the image data from remote
 internal final class RemoteImageSource {
-    internal let session: URLSession
+    internal static let shared: RemoteImageSource = RemoteImageSource()
+    
+    private let session: URLSession
+    private let observableMap: ImageDataObservableMap
     
     internal init(session: URLSession = .shared) {
         self.session = session
+        observableMap = ImageDataObservableMap()
     }
     
     /// Fetchs the image data from remote
     /// - Parameters:
     ///   - url: The remote image's url.
-    ///   - completionHandler: Called when the download progress finishes. 
-    /// - Returns: The data task of URLSession
+    /// - Returns: The observable of image data
     internal func fetchImage(with url: URL) -> Observable<Data> {
-        Observable.create { [unowned self] observer in
+        let observable = observableMap[url] ?? Observable.create { [unowned self] observer in
             let task = self.session.dataTask(with: url) { [weak self] data, _, error in
                 guard let self = self else { return }
                 
@@ -45,10 +48,17 @@ internal final class RemoteImageSource {
                 observer.onCompleted()
             }
             task.resume()
-            return Disposables.create { task.cancel() }
-        }
+            return Disposables.create { [weak self] in
+                task.cancel()
+                self?.observableMap[url] = nil
+            }
+        }.share(replay: 1)
+        
+        observableMap[url] = observable
+        
+        return observable
     }
-    
+
     private func verifyData(_ data: Data) -> Bool {
         CIImage(data: data) != nil
     }

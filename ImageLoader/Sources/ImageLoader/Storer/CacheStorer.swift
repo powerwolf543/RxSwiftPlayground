@@ -8,7 +8,9 @@ import Foundation
 import RxSwift
 
 /// The storer that manage to cache the data to the memory or disk
-internal final class CacheStorer: Storer {
+public final class CacheStorer: Storer {
+    public static let shared: CacheStorer = CacheStorer(memoryStorer: MemoryStorer(), diskStorer: DiskStorer())
+    
     private let memoryStorer: Storer
     private let diskStorer: Storer
 
@@ -26,7 +28,7 @@ internal final class CacheStorer: Storer {
     ///   - data: A data that you want to persist
     ///   - key: A string which can be a store identifier
     /// - Throws: ImageLoaderError.storeError
-    internal func store(_ data: Data, forKey key: URL) throws {
+    public func store(_ data: Data, forKey key: URL) throws {
         try memoryStorer.store(data, forKey: key)
         try diskStorer.store(data, forKey: key)
     }
@@ -34,7 +36,7 @@ internal final class CacheStorer: Storer {
     /// Retrieve data from storer
      /// - Parameter key: A string which can be a store identifier
      /// - Returns: A data for a specific key.
-    internal func retrieve(forKey key: URL) -> Data? {
+    public func retrieve(forKey key: URL) -> Data? {
         if let data = memoryStorer.retrieve(forKey: key) {
             return data
         } else if let data = diskStorer.retrieve(forKey: key) {

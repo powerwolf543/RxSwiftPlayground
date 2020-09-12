@@ -11,11 +11,14 @@ internal final class MemoryStorer: Storer {
     internal let caches: NSCache<NSString, CacheContainer>
     private let privateQueue: DispatchQueue
     
-    internal init() {
+    internal init(
+        totalCostLimit: Int = Int(ProcessInfo.processInfo.physicalMemory / 4),
+        countLimit: Int = .max
+    ) {
         caches = NSCache<NSString, CacheContainer>()
-        privateQueue = DispatchQueue(label: "com.DiskStorer.privateQueue")
-        caches.totalCostLimit = Int(ProcessInfo.processInfo.physicalMemory / 4)
-        caches.countLimit = .max
+        privateQueue = DispatchQueue(label: "com.MemoryStorer.privateQueue", attributes: .concurrent)
+        caches.totalCostLimit = totalCostLimit
+        caches.countLimit = countLimit
     }
     
     /// Stores the data to memory
@@ -24,7 +27,7 @@ internal final class MemoryStorer: Storer {
     ///   - key: A string which can be a store identifier
     /// - Throws: ImageLoaderError.storeError
     internal func store(_ data: Data, forKey key: URL) throws {
-        privateQueue.sync {
+        privateQueue.sync(flags: .barrier) {
             caches.setObject(CacheContainer(data), forKey: key.absoluteString as NSString)
         }
     }
