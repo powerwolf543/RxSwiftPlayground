@@ -34,7 +34,7 @@ internal final class RemoteImageSource {
                     return
                 }
                 
-                guard let data = data else {
+                guard let data = data, data.count > 0 else {
                     observer.onError(ImageLoaderError.networkError(reason: .emptyResponse))
                     return
                 }

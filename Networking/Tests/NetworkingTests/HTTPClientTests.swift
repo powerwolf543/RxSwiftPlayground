@@ -41,8 +41,7 @@ final class HTTPClientTests: XCTestCase {
     func testFetchDataFailed() throws {
         let url = URL(string: "https://www.ios.test/")!
 
-        let testError = TestError.test
-        TestsURLProtocol.addMockFailedResponse(error: testError, for: url)
+        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
         let request = URLRequest(url: url)
         let testSession = createTestSession()
         let testClient = HTTPClient(session: testSession)
@@ -56,7 +55,7 @@ final class HTTPClientTests: XCTestCase {
             },
             onError: { error in
                 switch error {
-                case TestError.test:
+                case MockNetworkError.connectionIsBroken:
                     fetchExpectation.fulfill()
                 default:
                     XCTFail("Wrong error occur")
@@ -120,8 +119,7 @@ final class HTTPClientTests: XCTestCase {
     func testFetchDataModelFailed() throws {
         let url = URL(string: "https://www.ios.test/")!
 
-        let testError = TestError.test
-        TestsURLProtocol.addMockFailedResponse(error: testError, for: url)
+        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
         let testSession = createTestSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<TestDataModel>(baseURL: url)
@@ -135,7 +133,7 @@ final class HTTPClientTests: XCTestCase {
             },
             onError: { error in
                 switch error {
-                case TestError.test:
+                case MockNetworkError.connectionIsBroken:
                     fetchExpectation.fulfill()
                 default:
                     XCTFail("Wrong error occur")
@@ -182,10 +180,6 @@ final class HTTPClientTests: XCTestCase {
         config.protocolClasses = [TestsURLProtocol.self]
         return URLSession(configuration: config)
     }
-}
-
-fileprivate enum TestError: Error {
-    case test
 }
 
 fileprivate struct TestDataModel: Codable, Equatable {

@@ -8,7 +8,7 @@ import Foundation
 import RxSwift
 
 /// The thread safe map of image data observable
-internal class ImageDataObservableMap {
+internal final class ImageDataObservableMap {
     private var observables: [URL: Observable<Data>]
     private let privateQueue: DispatchQueue
     
