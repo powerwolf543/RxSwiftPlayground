@@ -35,7 +35,7 @@ final class HTTPClientTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataFailed() throws {
@@ -63,7 +63,7 @@ final class HTTPClientTests: XCTestCase {
                 }
             }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataEmptyResponseError() throws {
@@ -91,7 +91,7 @@ final class HTTPClientTests: XCTestCase {
                 }
             }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataModelSuccess() throws {

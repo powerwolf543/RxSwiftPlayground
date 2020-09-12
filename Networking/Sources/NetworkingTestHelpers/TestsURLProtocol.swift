@@ -26,15 +26,8 @@ public final class TestsURLProtocol: URLProtocol {
 
     @discardableResult
     public static func addMockHTTPResponse(_ bodyData: Data?, for url: URL) throws -> HTTPURLResponse {
-        let httpResponse = HTTPURLResponse(
-            url: url,
-            statusCode: 200,
-            httpVersion: "1.1",
-            headerFields: nil
-        )!
-
+        let httpResponse = HTTPURLResponse.createSuccessResponse(with: url)
         addMockResponse(httpResponse, body: bodyData, for: url)
-
         return httpResponse
     }
 

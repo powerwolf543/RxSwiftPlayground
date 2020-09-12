@@ -12,6 +12,10 @@ internal final class ImageDataObservableMap {
     private var observables: [URL: Observable<Data>]
     private let privateQueue: DispatchQueue
     
+    internal var count: Int {
+        privateQueue.sync { observables.count }
+    }
+    
     internal init() {
         observables = [:]
         privateQueue = DispatchQueue(label: "com.ImageDataObservableMap.privateQueue", attributes: .concurrent)

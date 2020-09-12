@@ -14,12 +14,18 @@ internal final class RemoteImageSource {
     
     private let session: URLSession
     private let observableMap: ImageDataObservableMap
+    private let dataValidator: DataValidator
     
     /// RemoteImageSource initializer
     /// - Parameter session: Underlying `URLSession` for this instance.
-    internal init(session: URLSession) {
+    convenience internal init(session: URLSession) {
+        self.init(session: session, observableMap: ImageDataObservableMap(), dataValidator: ImageDataValidator())
+    }
+
+    internal init(session: URLSession, observableMap: ImageDataObservableMap, dataValidator: DataValidator) {
         self.session = session
-        observableMap = ImageDataObservableMap()
+        self.observableMap = observableMap
+        self.dataValidator = dataValidator
     }
     
     /// Fetches the image data from remote
@@ -27,10 +33,8 @@ internal final class RemoteImageSource {
     ///   - url: The remote image's url.
     /// - Returns: The observable of image data
     internal func fetchImage(with url: URL) -> Observable<Data> {
-        let observable = observableMap[url] ?? Observable.create { [unowned self] observer in
-            let task = self.session.dataTask(with: url) { [weak self] data, _, error in
-                guard let self = self else { return }
-                
+        let observable = observableMap[url] ?? Observable.create { observer in
+            let task = self.session.dataTask(with: url) { data, _, error in
                 if let error = error {
                     observer.onError(ImageLoaderError.networkError(reason: .connection(error)))
                     return
@@ -41,7 +45,7 @@ internal final class RemoteImageSource {
                     return
                 }
                 
-                guard self.verifyData(data) else {
+                guard self.dataValidator.validateData(data) else {
                     observer.onError(ImageLoaderError.networkError(reason: .invalidData))
                     return
                 }
@@ -51,7 +55,6 @@ internal final class RemoteImageSource {
             }
             task.resume()
             return Disposables.create { [weak self] in
-                task.cancel()
                 self?.observableMap[url] = nil
             }
         }.share(replay: 1)

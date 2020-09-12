@@ -12,7 +12,7 @@ final class ImageDataObservableMapTests: XCTestCase {
     func testSetAndGet() {
         let baseURL = URL(string: "http://www.ImageDataObservableMap.test.com")!
         let map = ImageDataObservableMap()
-        let keysAndResults = (0...10)
+        let keysAndResults = (0..<10)
             .map(String.init)
             .map { (baseURL.appendingPathComponent($0), Data("test \($0)".utf8)) }
         
@@ -23,6 +23,8 @@ final class ImageDataObservableMapTests: XCTestCase {
                 return Disposables.create()
             }
         }
+        
+        XCTAssertEqual(map.count, 10)
                 
         for (key, result) in keysAndResults {
             guard let observable = map[key] else {

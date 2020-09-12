@@ -32,7 +32,7 @@ final class RemoteImageSourceTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         )
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testConnectionBreak() {
@@ -66,7 +66,7 @@ final class RemoteImageSourceTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         )
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testEmptyResponse() throws {
@@ -95,7 +95,7 @@ final class RemoteImageSourceTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         )
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testErrorCaseOfInvalidData() throws {
@@ -125,6 +125,43 @@ final class RemoteImageSourceTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         )
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testSharedObservable() throws {
+        let url = URL(string: "https://www.ios.test/A")!
+        let testData = Data("Data".utf8)
+        
+        var performTimes = 0
+        
+        TestsURLProtocol.addResponseProvider({ _ in
+            performTimes += 1
+            return .success((HTTPURLResponse.createSuccessResponse(with: url), testData))
+        }, for: url)
+
+        let testSession = URLSession.createTestingSession()
+        let observableMap = ImageDataObservableMap()
+        let dataValidator = MockDataValidator(result: true)
+        let imageFetcher = RemoteImageSource(session: testSession, observableMap: observableMap, dataValidator: dataValidator)
+        
+        var observables: [Observable<Data>] = []
+        
+        for _ in 0...5 {
+            observables.append(imageFetcher.fetchImage(with: url))
+        }
+        
+        XCTAssertEqual(performTimes, 0)
+        XCTAssertEqual(observableMap.count, 1)
+        
+        observables.forEach {
+            let subcriptionExpectation = expectation(description: "Subscription")
+            _ = $0.subscribe(onNext: {
+                XCTAssertEqual($0, testData)
+                XCTAssertEqual(performTimes, 1)
+                subcriptionExpectation.fulfill()
+            })
+        }
+
+        waitForExpectations(timeout: 5)
     }
 }
