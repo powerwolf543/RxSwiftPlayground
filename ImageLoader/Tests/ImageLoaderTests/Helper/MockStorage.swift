@@ -10,7 +10,7 @@ import Foundation
 final class MockStorage: Storage {
     static let defaultKey = URL(string: "htts://www.test.com")!
     
-    private(set) var map: [URL: Data] = [:]
+    var map: [URL: Data] = [:]
     
     init(testData: Data? = nil) {
         map[MockStorage.defaultKey] = testData
