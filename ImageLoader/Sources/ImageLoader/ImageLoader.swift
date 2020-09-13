@@ -14,14 +14,14 @@ public final class ImageLoader {
     /// A storage that manages to cache the data.
     private let cacheStorage: Storage
     
-    public convenience init() {
-        self.init(
-            remoteImageSource: RemoteImageSource.shared,
-            cacheStorage: CacheStorage.shared
-        )
-    }
-    
-    internal init(remoteImageSource: RemoteImageSource, cacheStorage: Storage) {
+    /// ImageLoader initializer
+    /// - Parameters:
+    ///   - remoteImageSource: A storage that manages to cache the data.
+    ///   - cacheStorage: A image source that manages to download the image
+    public init(
+        remoteImageSource: RemoteImageSource = RemoteImageSource.shared,
+        cacheStorage: Storage = CacheStorage.shared
+    ) {
         self.remoteImageSource = remoteImageSource
         self.cacheStorage = cacheStorage
     }

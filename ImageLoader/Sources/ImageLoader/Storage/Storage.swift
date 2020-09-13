@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents types which could be stored and retrieved the data
-internal protocol Storage {
+public protocol Storage {
     /// Stores the data
     /// - Parameters:
     ///   - data: A data that you want to persist

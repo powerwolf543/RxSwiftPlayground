@@ -9,8 +9,8 @@ import Foundation
 import RxSwift
 
 /// A image source that manages to fetch the image data from remote
-internal final class RemoteImageSource {
-    internal static let shared: RemoteImageSource = RemoteImageSource(session: .shared)
+public final class RemoteImageSource {
+    public static let shared: RemoteImageSource = RemoteImageSource(session: .shared)
     
     private let session: URLSession
     private let observableMap: ImageDataObservableMap
@@ -18,7 +18,7 @@ internal final class RemoteImageSource {
     
     /// RemoteImageSource initializer
     /// - Parameter session: Underlying `URLSession` for this instance.
-    convenience internal init(session: URLSession) {
+    public convenience init(session: URLSession) {
         self.init(session: session, observableMap: ImageDataObservableMap(), dataValidator: ImageDataValidator())
     }
 
@@ -62,9 +62,5 @@ internal final class RemoteImageSource {
         observableMap[url] = observable
         
         return observable
-    }
-
-    private func verifyData(_ data: Data) -> Bool {
-        CIImage(data: data) != nil
     }
 }
