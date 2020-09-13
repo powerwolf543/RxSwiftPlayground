@@ -8,7 +8,7 @@ import CoreImage
 import Foundation
 import RxSwift
 
-/// A image fetcher that manages to fetch the image data from remote
+/// A image source that manages to fetch the image data from remote
 internal final class RemoteImageSource {
     internal static let shared: RemoteImageSource = RemoteImageSource(session: .shared)
     
