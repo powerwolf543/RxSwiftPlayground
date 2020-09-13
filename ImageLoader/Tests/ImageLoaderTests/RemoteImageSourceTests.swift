@@ -128,16 +128,19 @@ final class RemoteImageSourceTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testSharedObservable() throws {
-        let url = URL(string: "https://www.ios.test/A")!
+    func testSharedObservableWorkProperly() throws {
+        let url = URL(string: "https://www.ios.test/main")!
         let testData = Data("Data".utf8)
-        
+        let otherURL = URL(string: "https://www.ios.test/other")!
+        let otherData = Data("Other Data".utf8)
+
         var performTimes = 0
         
         TestsURLProtocol.addResponseProvider({ _ in
             performTimes += 1
             return .success((HTTPURLResponse.createSuccessResponse(with: url), testData))
         }, for: url)
+        try TestsURLProtocol.addMockHTTPResponse(otherData, for: otherURL)
 
         let testSession = URLSession.createTestingSession()
         let observableMap = ImageDataObservableMap()
@@ -153,6 +156,11 @@ final class RemoteImageSourceTests: XCTestCase {
         XCTAssertEqual(performTimes, 0)
         XCTAssertEqual(observableMap.count, 1)
         
+        let otherObservable = imageFetcher.fetchImage(with: otherURL)
+        
+        XCTAssertEqual(performTimes, 0)
+        XCTAssertEqual(observableMap.count, 2)
+        
         observables.forEach {
             let subcriptionExpectation = expectation(description: "Subscription")
             _ = $0.subscribe(onNext: {
@@ -161,7 +169,13 @@ final class RemoteImageSourceTests: XCTestCase {
                 subcriptionExpectation.fulfill()
             })
         }
+        
+        let subcriptionExpectation = expectation(description: "Subscription")
+        _ = otherObservable.subscribe(onNext: {
+            XCTAssertEqual($0, otherData)
+            subcriptionExpectation.fulfill()
+        })
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 3)
     }
 }
