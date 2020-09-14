@@ -27,7 +27,7 @@ final public class HTTPClient: NetworkClient {
     
     public func fetchData(request: URLRequest) -> Observable<Data> {
         Observable.create { observer in
-            let task = self.session.dataTask(with: request) { (data, _, error) in
+            let task = self.session.dataTask(with: request) { data, _, error in
                 if let error = error {
                     observer.onError(error)
                 }
