@@ -8,12 +8,14 @@ let package = Package(
     ],
     products: [
         .library(name: "Networking", targets: ["Networking"]),
+        .library(name: "NetworkingTestHelpers", targets: ["NetworkingTestHelpers"]),
     ],
     dependencies: [
         .package(url: "https://github.com/ReactiveX/RxSwift", from: "5.1.1"),
     ],
     targets: [
         .target(name: "Networking", dependencies: ["RxSwift"]),
-        .testTarget(name: "NetworkingTests", dependencies: ["Networking"])
+        .target(name: "NetworkingTestHelpers"),
+        .testTarget(name: "NetworkingTests", dependencies: ["Networking", "NetworkingTestHelpers"])
     ]
 )

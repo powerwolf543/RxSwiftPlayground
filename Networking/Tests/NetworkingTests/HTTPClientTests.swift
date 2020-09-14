@@ -5,6 +5,7 @@
 //
 
 import Networking
+import NetworkingTestHelpers
 import RxSwift
 import XCTest
 
@@ -21,7 +22,7 @@ final class HTTPClientTests: XCTestCase {
 
         try TestsURLProtocol.addMockHTTPResponse(testData, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -34,16 +35,15 @@ final class HTTPClientTests: XCTestCase {
             },
             onCompleted: { fetchExpectation.fulfill() }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataFailed() throws {
         let url = URL(string: "https://www.ios.test/")!
 
-        let testError = TestError.test
-        TestsURLProtocol.addMockFailedResponse(error: testError, for: url)
+        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -55,7 +55,7 @@ final class HTTPClientTests: XCTestCase {
             },
             onError: { error in
                 switch error {
-                case TestError.test:
+                case MockNetworkError.connectionIsBroken:
                     fetchExpectation.fulfill()
                 default:
                     XCTFail("Wrong error occur")
@@ -63,7 +63,7 @@ final class HTTPClientTests: XCTestCase {
                 }
             }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataEmptyResponseError() throws {
@@ -71,7 +71,7 @@ final class HTTPClientTests: XCTestCase {
 
         try TestsURLProtocol.addMockHTTPResponse(nil, for: url)
         let request = URLRequest(url: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         
         let fetchExpectation = expectation(description: "Fetch data")
@@ -91,7 +91,7 @@ final class HTTPClientTests: XCTestCase {
                 }
             }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
     
     func testFetchDataModelSuccess() throws {
@@ -99,7 +99,7 @@ final class HTTPClientTests: XCTestCase {
         let testModel = TestDataModel()
         
         try TestsURLProtocol.addMockHTTPResponse(encoding: testModel, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<TestDataModel>(baseURL: url)
         
@@ -119,9 +119,8 @@ final class HTTPClientTests: XCTestCase {
     func testFetchDataModelFailed() throws {
         let url = URL(string: "https://www.ios.test/")!
 
-        let testError = TestError.test
-        TestsURLProtocol.addMockFailedResponse(error: testError, for: url)
-        let testSession = createTestSession()
+        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<TestDataModel>(baseURL: url)
         
@@ -134,7 +133,7 @@ final class HTTPClientTests: XCTestCase {
             },
             onError: { error in
                 switch error {
-                case TestError.test:
+                case MockNetworkError.connectionIsBroken:
                     fetchExpectation.fulfill()
                 default:
                     XCTFail("Wrong error occur")
@@ -150,7 +149,7 @@ final class HTTPClientTests: XCTestCase {
         let testModel = TestDataModel()
         
         try TestsURLProtocol.addMockHTTPResponse(encoding: testModel, for: url)
-        let testSession = createTestSession()
+        let testSession = URLSession.createTestingSession()
         let testClient = HTTPClient(session: testSession)
         let testRequest = TestRequest<String>(baseURL: url)
         
@@ -175,16 +174,6 @@ final class HTTPClientTests: XCTestCase {
         ).disposed(by: bag)
         waitForExpectations(timeout: 1)
     }
-    
-    private func createTestSession() -> URLSession {
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [TestsURLProtocol.self]
-        return URLSession(configuration: config)
-    }
-}
-
-fileprivate enum TestError: Error {
-    case test
 }
 
 fileprivate struct TestDataModel: Codable, Equatable {

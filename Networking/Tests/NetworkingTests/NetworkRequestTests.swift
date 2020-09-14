@@ -29,6 +29,6 @@ final class NetworkRequestTests: XCTestCase {
             },
             onCompleted: { buildExpectation.fulfill() }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
     }
 }
