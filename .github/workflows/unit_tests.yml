@@ -6,13 +6,11 @@ jobs:
   swiftpm_tests:
     name: ${{ matrix.scheme }} tests on Xcode ${{ matrix.xcode }}
     runs-on: macos-latest
-    timeout-minutes: 10
-    if: github.event.pull_request.draft == false
     strategy:
       fail-fast: false
       matrix:
         scheme: ["ImageLoader", "Networking"]
-        xcode: ["11.6"]
+        xcode: ["11.7"]
 
     steps:
     - uses: actions/checkout@v2
@@ -21,7 +19,7 @@ jobs:
       run: sudo xcode-select --switch /Applications/Xcode_${{ matrix.xcode }}.app
 
     - name: ${{ matrix.scheme }} tests
-      run: xcodebuild test -scheme ${{ matrix.scheme }} -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.6' -enableCodeCoverage YES
+      run: xcodebuild test -scheme ${{ matrix.scheme }} -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.7' -enableCodeCoverage YES
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
