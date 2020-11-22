@@ -82,7 +82,8 @@ final class ImageLoaderTests: XCTestCase {
     func testRetrieveFromInternetFailed() {
         let url = URL(string: "https://www.ios.test/a.png")!
 
-        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
+        let mockError = createMockError()
+        TestsURLProtocol.addMockFailedResponse(error: mockError, for: url)
         let testSession = URLSession.createTestingSession()
         let remoteImageSource = RemoteImageSource(session: testSession)
         let cacheStorage = MockStorage()
@@ -98,12 +99,10 @@ final class ImageLoaderTests: XCTestCase {
                 case ImageLoaderError.networkError(let reason):
                     switch reason {
                     case .connection(let connectionError):
-                        switch connectionError {
-                        case MockNetworkError.connectionIsBroken:
-                            dataSubcriptionExpectation.fulfill()
-                        default:
-                            XCTFail("Unknown connection error")
-                        }
+                        let nsError = connectionError as NSError
+                        XCTAssertEqual(nsError.code, 123456)
+                        XCTAssertEqual(nsError.domain, "unit_test.mock_error")
+                        dataSubcriptionExpectation.fulfill()
                     default:
                         XCTFail("Unknown reason")
                     }
@@ -113,5 +112,9 @@ final class ImageLoaderTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 2)
+    }
+
+    private func createMockError() -> Error {
+        NSError(domain: "unit_test.mock_error", code: 123456, userInfo: nil)
     }
 }

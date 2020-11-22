@@ -15,9 +15,7 @@ final class NetworkRequestTests: XCTestCase {
         let url = URL(string: "https://www.ios.test/")!
         let path = "path"
         let method: HTTPMethod = .get
-        
-        let buildExpectation = expectation(description: "Build request")
-        
+
         TestRequest<String>(baseURL: url, path: path, method: method).buildRequest().subscribe(
             onNext: { request in
                 XCTAssertEqual(request.url?.absoluteString, "https://www.ios.test/path")
@@ -25,10 +23,7 @@ final class NetworkRequestTests: XCTestCase {
             },
             onError: { _ in
                 XCTFail("Should not be failed.")
-                buildExpectation.fulfill()
-            },
-            onCompleted: { buildExpectation.fulfill() }
+            }
         ).disposed(by: bag)
-        waitForExpectations(timeout: 1)
     }
 }
