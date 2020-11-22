@@ -1,16 +1,16 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
     name: "ImageLoader",
     platforms: [
-        .iOS(.v13), .macOS(.v10_15),
+        .iOS(.v13),
     ],
     products: [
         .library(name: "ImageLoader", targets: ["ImageLoader"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift", from: "5.1.1"),
+        .package(url: "https://github.com/ReactiveX/RxSwift", .exact("6.0.0-rc.2")),
         .package(path: "Networking"),
     ],
     targets: [

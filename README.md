@@ -1,7 +1,5 @@
 [![](https://github.com/powerwolf543/RxSwiftPlayground/workflows/UnitTests/badge.svg)](https://github.com/powerwolf543/RxSwiftPlayground/actions?query=workflow%3AUnitTests) 
 [![codecov](https://codecov.io/gh/powerwolf543/RxSwiftPlayground/branch/master/graph/badge.svg)](https://codecov.io/gh/powerwolf543/RxSwiftPlayground)
-[![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat)](https://github.com/apple/swift-package-manager)
-
 
 # RxSwiftPlayground
 An iOS project that is practiced with `RxSwift`
@@ -34,8 +32,8 @@ ImageLoader().retrieveImage(with: url).bind(to: imageView.rx.image)
 
 ## Requirements
 
-- Xcode 11.7
-- Swift 5.2
+- Xcode 12.2
+- Swift 5.3
 
 ## Author
 

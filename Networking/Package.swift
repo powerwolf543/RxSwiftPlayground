@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "NetworkingTestHelpers", targets: ["NetworkingTestHelpers"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift", from: "5.1.1"),
+        .package(url: "https://github.com/ReactiveX/RxSwift", .exact("6.0.0-rc.2")),
     ],
     targets: [
         .target(name: "Networking", dependencies: ["RxSwift"]),

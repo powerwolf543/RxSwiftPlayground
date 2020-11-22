@@ -1,16 +1,19 @@
 name: UnitTests
 
-on: [push]
+on: 
+  push: 
+    branches:
+      - '**'
 
 jobs:
   swiftpm_tests:
-    name: ${{ matrix.scheme }} tests on Xcode ${{ matrix.xcode }}
+    name: ${{ matrix.scheme }} tests
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
         scheme: ["ImageLoader", "Networking"]
-        xcode: ["11.7"]
+        xcode: ["12.2"]
 
     steps:
     - uses: actions/checkout@v2
@@ -19,8 +22,8 @@ jobs:
       run: sudo xcode-select --switch /Applications/Xcode_${{ matrix.xcode }}.app
 
     - name: ${{ matrix.scheme }} tests
-      run: xcodebuild test -scheme ${{ matrix.scheme }} -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.7' -enableCodeCoverage YES
-    
+      run: set -o pipefail && xcodebuild test -scheme ${{ matrix.scheme }} -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.2' -enableCodeCoverage YES | xcpretty
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
