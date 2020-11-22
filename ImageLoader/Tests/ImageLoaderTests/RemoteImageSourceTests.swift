@@ -37,8 +37,9 @@ final class RemoteImageSourceTests: XCTestCase {
     
     func testConnectionBreak() {
         let url = URL(string: "https://www.ios.test/")!
-        
-        TestsURLProtocol.addMockFailedResponse(error: MockNetworkError.connectionIsBroken, for: url)
+
+        let mockError = createMockError()
+        TestsURLProtocol.addMockFailedResponse(error: mockError, for: url)
         let testSession = URLSession.createTestingSession()
         let imageFetcher = RemoteImageSource(session: testSession)
         
@@ -51,12 +52,10 @@ final class RemoteImageSourceTests: XCTestCase {
                 case ImageLoaderError.networkError(let reason):
                     switch reason {
                     case .connection(let connectionError):
-                        switch connectionError {
-                        case MockNetworkError.connectionIsBroken:
-                            fetchExpectation.fulfill()
-                        default:
-                            XCTFail("Incorrect error of connection.")
-                        }
+                        let nsError = connectionError as NSError
+                        XCTAssertEqual(nsError.code, 123456)
+                        XCTAssertEqual(nsError.domain, "unit_test.mock_error")
+                        fetchExpectation.fulfill()
                     default:
                         XCTFail("Incorrect reason")
                     }
@@ -177,5 +176,9 @@ final class RemoteImageSourceTests: XCTestCase {
         })
 
         waitForExpectations(timeout: 3)
+    }
+
+    private func createMockError() -> Error {
+        NSError(domain: "unit_test.mock_error", code: 123456, userInfo: nil)
     }
 }
