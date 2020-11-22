@@ -32,8 +32,8 @@ ImageLoader().retrieveImage(with: url).bind(to: imageView.rx.image)
 
 ## Requirements
 
-- Xcode 11.7
-- Swift 5.2
+- Xcode 12.2
+- Swift 5.3
 
 ## Author
 
