@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "ImageLoader", targets: ["ImageLoader"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift", .exact("6.0.0-rc.2")),
+        .package(url: "https://github.com/ReactiveX/RxSwift", .exact("6.1.0")),
         .package(path: "Networking"),
     ],
     targets: [
