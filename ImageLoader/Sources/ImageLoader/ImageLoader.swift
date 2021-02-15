@@ -43,7 +43,7 @@ public final class ImageLoader {
             observer.onCompleted()
             return Disposables.create()
         }
-        .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
+        .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
         .flatMap { data -> Observable<Data> in
             if let data = data { return Observable.just(data) }
             return self.remoteImageSource.fetchImage(with: url).map { data in

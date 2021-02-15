@@ -5,7 +5,9 @@
 //  Copyright © 2020 Nixon Shih. All rights reserved.
 //
 
+import ImageLoader
 import Networking
+import RxCocoa
 import RxSwift
 import UIKit
 
@@ -36,25 +38,31 @@ final internal class PhotoListViewController: UIViewController {
     
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupUIs()
-        
-        HTTPClient().fetchDataModel(request: PhotosRequest()).observeOn(MainScheduler.instance).subscribe(onNext: { [unowned self] models in
-            self.dataSource = models
-            self.tableView.reloadData()
-        }).disposed(by: disposeBag)
+
+        HTTPClient()
+            .fetchDataModel(request: PhotosRequest())
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { object, value in
+                object.dataSource = value
+                object.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupUIs() {
         view.backgroundColor = UIColor(white: 29.0 / 255.0, alpha: 1.0)
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         navigationItem.titleView = searchBar
         
         tableView.dataSource = self
+        tableView.delegate = self
     }
 }
 
 extension PhotoListViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
     }
@@ -63,6 +71,13 @@ extension PhotoListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PhotoTableViewCell
         let model = dataSource[indexPath.row]
         cell.label.text = model.title
+        ImageLoader().retrieveImage(with: model.thumbnailURL).bind(to: cell.contentImageView.rx.image).disposed(by: cell.bag)
         return cell
+    }
+}
+
+extension PhotoListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 170
     }
 }
