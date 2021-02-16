@@ -26,12 +26,11 @@ final internal class PhotoListViewController: UIViewController {
         return tableView
     }()
     
-    private var dataSource: [PhotoInfo] = []
-    private let disposeBag: DisposeBag = DisposeBag()
+    private var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: Function
+    // MARK: Override functions
     
-    override func loadView() {
+    override internal func loadView() {
         super.loadView()
         view = tableView
     }
@@ -40,39 +39,38 @@ final internal class PhotoListViewController: UIViewController {
         super.viewDidLoad()
 
         setupUIs()
+    }
 
-        HTTPClient()
-            .fetchDataModel(request: PhotosRequest())
-            .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { object, value in
-                object.dataSource = value
-                object.tableView.reloadData()
-            })
+    override internal func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        let viewModel = PhotoListViewModel(
+            viewWillAppear: Observable<Void>.just(()),
+            networkClient: HTTPClient()
+        )
+
+        viewModel.datas
+            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: PhotoTableViewCell.self)) { (row, data, cell) in
+                cell.label.text = data.title
+                ImageLoader().retrieveImage(with: data.thumbnailURL).bind(to: cell.contentImageView.rx.image).disposed(by: cell.bag)
+            }
             .disposed(by: disposeBag)
     }
-    
+
+    override internal func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        disposeBag = DisposeBag()
+    }
+
+    // MARK: Other functions
+
     private func setupUIs() {
         view.backgroundColor = UIColor(white: 29.0 / 255.0, alpha: 1.0)
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         navigationItem.titleView = searchBar
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-    }
-}
 
-extension PhotoListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dataSource.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PhotoTableViewCell
-        let model = dataSource[indexPath.row]
-        cell.label.text = model.title
-        ImageLoader().retrieveImage(with: model.thumbnailURL).bind(to: cell.contentImageView.rx.image).disposed(by: cell.bag)
-        return cell
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
 }
 
